@@ -136,7 +136,7 @@ public class MovieController {
             // 记录开始时间
             long startTime = System.currentTimeMillis();
             Result res=
-                    session.run("Match (d:Person{name:'"+name+"'})-[r:Director]->(m:Movie) return m.name");
+                    session.run("Match (d:Person{name:'"+name+"'})-[r:Direct]->(m:Movie) return m.name");
 
             // 记录结束时间
             long endTime = System.currentTimeMillis();

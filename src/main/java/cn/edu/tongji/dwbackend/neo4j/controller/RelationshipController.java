@@ -32,7 +32,7 @@ public class RelationshipController {
             // 记录开始时间
             long startTime = System.currentTimeMillis();
             Result res=
-                    session.run("Match (p:Person)-[r:MainAct|Act]->(m:Movie)<-[a:Director]-(q:Person) " +
+                    session.run("Match (p:Person)-[r:MainAct|Act]->(m:Movie)<-[a:Direct]-(q:Person) " +
                             "where id(p)<> id(q) return p.name,q.name,count(m) order by count(m) desc limit 3");
 
             // 记录结束时间
