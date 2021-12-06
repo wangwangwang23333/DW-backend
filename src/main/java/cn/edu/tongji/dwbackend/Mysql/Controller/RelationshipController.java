@@ -3,6 +3,7 @@ package
  * @author 梁乔 2021/12/6
  **/
 
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2021/12/6 14:01 
  */
 @RestController
+@RequestMapping("api/v1/mysql/Relationship")
 public class RelationshipController {
 
 }
