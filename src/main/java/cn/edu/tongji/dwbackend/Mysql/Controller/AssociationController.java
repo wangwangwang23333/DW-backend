@@ -3,7 +3,7 @@ package
  * @author 梁乔 2021/12/6
  **/
 
-import cn.edu.tongji.dwbackend.service.AssociationService;
+import cn.edu.tongji.dwbackend.Mysql.service.AssociationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;

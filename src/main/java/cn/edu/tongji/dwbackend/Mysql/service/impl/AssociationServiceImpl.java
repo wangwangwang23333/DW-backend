@@ -1,9 +1,9 @@
 package
-        cn.edu.tongji.dwbackend.service.impl;/**
+        cn.edu.tongji.dwbackend.Mysql.service.impl;/**
  * @author 梁乔 2021/12/6
  **/
 
-import cn.edu.tongji.dwbackend.service.AssociationService;
+import cn.edu.tongji.dwbackend.Mysql.service.AssociationService;
 
 import java.util.List;
 
