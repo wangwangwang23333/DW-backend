@@ -15,4 +15,8 @@ import java.util.List;
 @Service
 public interface AssociationService {
     List<String> getMovieNameByStr(String movieString);
+
+    List<String> getDirectorNameByStr(String directorName);
+
+    public List<String> getActorNameByStr(String actorName);
 }

@@ -32,4 +32,18 @@ public class AssociationController {
     ){
         return new ResponseEntity<>(associationService.getMovieNameByStr(movieName), HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/director",method = RequestMethod.GET)
+    public ResponseEntity<List<String>> getDirectorNameListByString(
+            @RequestParam(value = "directorName")String directorName
+    ){
+        return new ResponseEntity<>(associationService.getDirectorNameByStr(directorName), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/actor",method = RequestMethod.GET)
+    public ResponseEntity<List<String>> getActorNameListByString(
+            @RequestParam(value = "actorName")String actorName
+    ){
+        return new ResponseEntity<>(associationService.getActorNameByStr(actorName), HttpStatus.OK);
+    }
 }

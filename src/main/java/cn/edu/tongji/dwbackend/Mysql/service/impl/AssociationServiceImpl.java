@@ -3,8 +3,14 @@ package
  * @author 梁乔 2021/12/6
  **/
 
+import cn.edu.tongji.dwbackend.Mysql.entity.DirectorMovieEntity;
 import cn.edu.tongji.dwbackend.Mysql.entity.MovieEntity;
+import cn.edu.tongji.dwbackend.Mysql.entity.ViewActorNameEntity;
+import cn.edu.tongji.dwbackend.Mysql.entity.ViewDirectorNameEntity;
+import cn.edu.tongji.dwbackend.Mysql.repository.DirectorMovieRepository;
 import cn.edu.tongji.dwbackend.Mysql.repository.MovieRepository;
+import cn.edu.tongji.dwbackend.Mysql.repository.ViewActorNameRepository;
+import cn.edu.tongji.dwbackend.Mysql.repository.ViewDirectorNameRepository;
 import cn.edu.tongji.dwbackend.Mysql.service.AssociationService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +31,15 @@ public class AssociationServiceImpl implements AssociationService {
     @Resource
     MovieRepository movieRepository;
 
+    @Resource
+    DirectorMovieRepository directorMovieRepository;
+
+    @Resource
+    ViewDirectorNameRepository viewDirectorNameRepository;
+
+    @Resource
+    ViewActorNameRepository viewActorNameRepository;
+
     @Override
     public List<String> getMovieNameByStr(String movieString) {
         Pageable pageable = PageRequest.of(0, 25);
@@ -33,6 +48,34 @@ public class AssociationServiceImpl implements AssociationService {
         List<String> result = new ArrayList<>();
         for (MovieEntity movie: movieList){
             result.add(movie.getMovieName());
+        }
+
+        return result;
+    }
+
+    @Override
+    public List<String> getDirectorNameByStr(String directorName){
+        Pageable pageable = PageRequest.of(0, 50);
+        List<ViewDirectorNameEntity> directorList =
+                viewDirectorNameRepository.findAllByDirectorNameStartingWith(directorName, pageable);
+
+        List<String> result = new ArrayList<>();
+        for (ViewDirectorNameEntity director: directorList){
+            result.add(director.getDirectorName());
+        }
+
+        return result;
+    }
+
+    @Override
+    public List<String> getActorNameByStr(String actorName){
+        Pageable pageable = PageRequest.of(0, 50);
+        List<ViewActorNameEntity> actorList =
+                viewActorNameRepository.findAllByActorNameStartingWith(actorName, pageable);
+
+        List<String> result = new ArrayList<>();
+        for (ViewActorNameEntity actor: actorList){
+            result.add(actor.getActorName());
         }
 
         return result;
