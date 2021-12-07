@@ -1,5 +1,5 @@
 package
-        cn.edu.tongji.dwbackend.Mysql.Controller;/**
+        cn.edu.tongji.dwbackend.Mysql.controller;/**
  * @author 梁乔 2021/12/6
  **/
 

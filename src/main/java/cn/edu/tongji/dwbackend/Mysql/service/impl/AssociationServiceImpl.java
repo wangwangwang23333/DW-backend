@@ -8,7 +8,7 @@ import cn.edu.tongji.dwbackend.Mysql.service.AssociationService;
 import java.util.List;
 
 /**
- * 此处写RelationShipSeviceImpl类的描述
+ * 此处写RelationShipServiceImpl类的描述
  * @author 梁乔
  * @since 2021/12/6 22:00 
  */
