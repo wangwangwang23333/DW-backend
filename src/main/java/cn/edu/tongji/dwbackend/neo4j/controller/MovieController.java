@@ -1,14 +1,12 @@
 package cn.edu.tongji.dwbackend.neo4j.controller;
 
+import cn.edu.tongji.dwbackend.dto.MovieInfoDto;
 import org.neo4j.driver.Driver;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.Result;
 import org.neo4j.driver.Session;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.print.attribute.standard.Media;
 import java.util.HashMap;
@@ -31,62 +29,50 @@ public class MovieController {
         this.driver = driver;
     }
 
-    @GetMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public HashMap<String,Object> getMovieByCondition(@RequestParam(required = false) String movieName,
-                                                      @RequestParam(required = false) String category,
-                                                      @RequestParam(required = false) List<String> directorNames,
-                                                      @RequestParam(required = false) List<String> mainActors,
-                                                      @RequestParam(required = false) List<String> actors,
-                                                      @RequestParam(required = false) String minScore,
-                                                      @RequestParam(required = false) String maxScore,
-                                                      @RequestParam(required = false) Integer minYear,
-                                                      @RequestParam(required = false) Integer minMonth,
-                                                      @RequestParam(required = false) Integer minDay,
-                                                      @RequestParam(required = false) Integer maxYear,
-                                                      @RequestParam(required = false) Integer maxMonth,
-                                                      @RequestParam(required = false) Integer maxDay) {
+    @RequestMapping(method = RequestMethod.POST)
+    public HashMap<String,Object> getMovieByCondition(@RequestBody  MovieInfoDto movieInfo) {
 
         // match (m:Movie), (m)-[:Belong]->(c:Category{name:'DTS'}) where m.title = 'Book and Sword' return count(m)
         // where m.year*10000+m.month*100+m.day >=20101102
         // 导演：match (m:Movie), (m)<-[:MainAct]-(:Person{name:'Santana'}),(m)<-[:MainAct]-(:Person{name:'Treglia'})
         // 评分用 where
-
+        System.out.println(movieInfo.getActors());
         try (Session session = driver.session()) {
             String query = "match (m:Movie) ";
-            if (category != null){
-                query +=" , (m)-[:Belong]->(:Category{name:'"+category+"'}) ";
+            if (movieInfo.getCategory() != null){
+                query +=" , (m)-[:Belong]->(:Category{name:\""+movieInfo.getCategory()+"\"}) ";
             }
 
             // 导演名称
-            if(directorNames != null){
-                for(String directorName: directorNames){
-                    query += " ,(m)<-[:Direct]-(:Person{name;'"+directorName+"'})";
+            if(movieInfo.getDirectorNames() != null){
+                for(String directorName: movieInfo.getDirectorNames()){
+                    query += " ,(m)<-[:Direct]-(:Person{name:\""+directorName+"\"})";
                 }
             }
 
             // 主演名称
-            if(mainActors != null){
-                for(String mainActor: mainActors){
-                    query += " ,(m)<-[:MainAct]-(:Person{name;'"+mainActor+"'})";
+            if(movieInfo.getMainActors() != null){
+                for(String mainActor: movieInfo.getMainActors()){
+                    query += " ,(m)<-[:MainAct]-(:Person{name:\""+mainActor+"\"})";
                 }
             }
 
             // 演员名称
-            if(actors != null){
-                for(String actor: actors){
-                    query += " ,(m)<-[:Act]-(:Person{name;'"+actor+"'})";
+            if(movieInfo.getActors() != null){
+                for(String actor: movieInfo.getActors()){
+                    query += " ,(m)<-[:Act]-(:Person{name:\""+actor+"\"})";
                 }
             }
 
             Boolean whereAppear = false;
             // 电影名称
-            if(movieName != null){
-                query += " where m.title='"+movieName+"' ";
+            if(movieInfo.getMovieName() != null){
+                query += " where m.title=\""+movieInfo.getMovieName()+"\" ";
                 whereAppear = true;
             }
 
             // 最低评分
-            if (minScore != null){
+            if (movieInfo.getMinScore() != null){
                 if (whereAppear){
                     query+= " and ";
                 }
@@ -94,11 +80,11 @@ public class MovieController {
                     query += " where ";
                     whereAppear = true;
                 }
-                query += " m.score >="+ minScore+" ";
+                query += " m.score >="+ movieInfo.getMinScore()+" ";
             }
 
             // 最高评分
-            if (maxScore != null){
+            if (movieInfo.getMaxScore() != null){
                 if (whereAppear){
                     query+= " and ";
                 }
@@ -106,12 +92,12 @@ public class MovieController {
                     query += " where ";
                     whereAppear = true;
                 }
-                query+=" m.score <= "+maxScore+" ";
+                query+=" m.score <= "+movieInfo.getMaxScore()+" ";
             }
 
 
             // 上映时间
-            if(minYear!=null){
+            if(movieInfo.getMinYear()!=null){
                 if (whereAppear){
                     query+= " and ";
                 }
@@ -119,9 +105,10 @@ public class MovieController {
                     query += " where ";
                     whereAppear = true;
                 }
-                query+=" m.year*10000+m.month*100+m.day >= "+(10000*minYear+100*minMonth+minDay)+" ";
+                query+=" m.year*10000+m.month*100+m.day >= "+
+                        (10000*movieInfo.getMinYear()+100*movieInfo.getMinMonth()+movieInfo.getMinDay())+" ";
             }
-            if(maxYear!=null){
+            if(movieInfo.getMaxYear()!=null){
                 if (whereAppear){
                     query+= " and ";
                 }
@@ -129,7 +116,8 @@ public class MovieController {
                     query += " where ";
                     whereAppear = true;
                 }
-                query+=" m.year*10000+m.month*100+m.day <= "+(10000*maxYear+100*maxMonth+maxDay)+" ";
+                query+=" m.year*10000+m.month*100+m.day <= "+
+                        (10000*movieInfo.getMaxYear()+100*movieInfo.getMaxMonth()+movieInfo.getMaxDay())+" ";
             }
 
             query+=" return m.title ";
@@ -184,7 +172,7 @@ public class MovieController {
             // 记录开始时间
             long startTime = System.currentTimeMillis();
             Result res=
-                    session.run("Match (d:Person{name:'"+name+"'})-[r:Direct]->(m:Movie) return m.name");
+                    session.run("Match (d:Person{name:\""+name+"\"})-[r:Direct]->(m:Movie) return m.name");
 
             // 记录结束时间
             long endTime = System.currentTimeMillis();
@@ -206,7 +194,7 @@ public class MovieController {
             // 记录开始时间
             long startTime = System.currentTimeMillis();
             Result res=
-                    session.run("Match (d:Person{name:'"+name+"'})-[r:MainAct]->(m:Movie) return m.name");
+                    session.run("Match (d:Person{name:\""+name+"\"})-[r:MainAct]->(m:Movie) return m.name");
 
             // 记录结束时间
             long endTime = System.currentTimeMillis();
@@ -228,7 +216,7 @@ public class MovieController {
             // 记录开始时间
             long startTime = System.currentTimeMillis();
             Result res=
-                    session.run("Match (d:Person{name:'"+name+"'})-[r:Act]->(m:Movie) return m.name");
+                    session.run("Match (d:Person{name:\""+name+"\"})-[r:Act]->(m:Movie) return m.name");
 
             // 记录结束时间
             long endTime = System.currentTimeMillis();
