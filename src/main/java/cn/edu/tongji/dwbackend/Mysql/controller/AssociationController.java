@@ -20,16 +20,16 @@ import java.util.List;
  * @since 2021/12/6 21:51 
  */
 @RestController
-@RequestMapping("api/v1/mysql/Association/")
+@RequestMapping("/mysql/association")
 public class AssociationController {
 
     @Resource
     AssociationService associationService;
 
-    @RequestMapping(value = "movie",method = RequestMethod.GET)
+    @RequestMapping(value = "/movie",method = RequestMethod.GET)
     public ResponseEntity<List<String>> getMovieNameListByString(
-            @RequestParam(value = "movieString")String movieString
+            @RequestParam(value = "movieName")String movieName
     ){
-        return new ResponseEntity<>(associationService.getMovieNameByStr(movieString), HttpStatus.OK);
+        return new ResponseEntity<>(associationService.getMovieNameByStr(movieName), HttpStatus.OK);
     }
 }
