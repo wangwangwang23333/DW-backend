@@ -5,10 +5,12 @@ import org.neo4j.driver.Driver;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.Result;
 import org.neo4j.driver.Session;
+import org.neo4j.driver.internal.value.NullValue;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.print.attribute.standard.Media;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +38,6 @@ public class MovieController {
         // where m.year*10000+m.month*100+m.day >=20101102
         // 导演：match (m:Movie), (m)<-[:MainAct]-(:Person{name:'Santana'}),(m)<-[:MainAct]-(:Person{name:'Treglia'})
         // 评分用 where
-        System.out.println(movieInfo.getActors());
         try (Session session = driver.session()) {
             String query = "match (m:Movie) ";
             if (movieInfo.getCategory() != null){
@@ -120,7 +121,7 @@ public class MovieController {
                         (10000*movieInfo.getMaxYear()+100*movieInfo.getMaxMonth()+movieInfo.getMaxDay())+" ";
             }
 
-            query+=" return m.title ";
+            query+=" return m ";
             System.out.println("查询语句为: "+query);
 
             // 记录开始时间
@@ -135,9 +136,47 @@ public class MovieController {
             HashMap<String,Object> response = new HashMap<>();
 
             List<Record> result = res.list();
+            System.out.println(result.get(0).get(0).get("title"));
 
-            response.put("movies",res
-                    .list(r -> r.get(0).asString()));
+            List<HashMap<String, Object>> movieResult = new ArrayList<>();
+
+            // 返回50条
+            for(int i=0;i<result.size() && i <50;++i){
+                HashMap<String, Object> movieNode = new HashMap<>();
+                if (result.get(i).get(0).get("asin") != NullValue.NULL){
+                    movieNode.put("asin",result.get(i).get(0).get("asin").asString());
+                }
+                if (result.get(i).get(0).get("title") != NullValue.NULL){
+                    movieNode.put("title",result.get(i).get(0).get("title").asString());
+                }
+                if (result.get(i).get(0).get("format") != NullValue.NULL){
+                    movieNode.put("format",result.get(i).get(0).get("format").asString());
+                }
+                if (result.get(i).get(0).get("edition") != NullValue.NULL){
+                    System.out.println("read it");
+                    movieNode.put("edition",result.get(i).get(0).get("edition").asString());
+                }
+                if (result.get(i).get(0).get("score") != NullValue.NULL){
+                    movieNode.put("score",String.valueOf(result.get(i).get(0).get("score")));
+                }
+                if (result.get(i).get(0).get("commentNum") != NullValue.NULL){
+                    movieNode.put("commentNum",String.valueOf(result.get(i).get(0).get("commentNum")));
+                }
+                if (result.get(i).get(0).get("year") != NullValue.NULL){
+                    movieNode.put("year",String.valueOf(result.get(i).get(0).get("year")));
+                }
+                if (result.get(i).get(0).get("month") != NullValue.NULL){
+                    movieNode.put("month",String.valueOf(result.get(i).get(0).get("month")));
+                }
+                if (result.get(i).get(0).get("day") != NullValue.NULL){
+                    movieNode.put("day",String.valueOf(result.get(i).get(0).get("day")));
+                }
+
+                movieResult.add(movieNode);
+            }
+
+            response.put("movies",movieResult);
+            response.put("movieNum",result.size());
             response.put("time",endTime-startTime);
 
             return response;
