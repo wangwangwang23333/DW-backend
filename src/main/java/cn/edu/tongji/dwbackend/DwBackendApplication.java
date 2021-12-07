@@ -22,7 +22,7 @@ public class DwBackendApplication {
                         .addMapping("/**")
                         .allowedOrigins(
                                 "http://localhost:8080",
-                                "http://*.guisu.website",
+                                "http://localhost:9528",
                                 "https://*.guisu.website"
                         )
                         .allowedMethods("GET", "POST", "DELETE", "PUT", "OPTIONS")
