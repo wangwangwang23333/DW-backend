@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -52,5 +53,15 @@ public class AssociationController {
             @RequestParam(value = "category") String category
     ){
         return new ResponseEntity<>(associationService.getCategoryNameByStr(category), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/actor/cooperation", method = RequestMethod.GET)
+    public ResponseEntity<HashMap<String,Object>> getActorsCooperationTime(){
+        // 记录开始时间
+        long startTime = System.currentTimeMillis();
+        HashMap<String,Object> result = associationService.getMaxCooperationTimeOfActors();
+        long endTime = System.currentTimeMillis();
+        result.put("time",endTime-startTime);
+        return new ResponseEntity<>(result,HttpStatus.OK);
     }
 }

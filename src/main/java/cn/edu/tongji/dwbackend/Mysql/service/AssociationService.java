@@ -5,6 +5,7 @@ package
 
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -21,4 +22,6 @@ public interface AssociationService {
     List<String> getActorNameByStr(String actorName);
 
     List<String> getCategoryNameByStr(String category);
+
+    HashMap<String,Object> getMaxCooperationTimeOfActors();
 }

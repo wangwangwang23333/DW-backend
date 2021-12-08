@@ -3,18 +3,17 @@ package
  * @author 梁乔 2021/12/6
  **/
 
-import cn.edu.tongji.dwbackend.Mysql.entity.MovieEntity;
-import cn.edu.tongji.dwbackend.Mysql.entity.ViewActorNameEntity;
-import cn.edu.tongji.dwbackend.Mysql.entity.ViewCategoryNameEntity;
-import cn.edu.tongji.dwbackend.Mysql.entity.ViewDirectorNameEntity;
+import cn.edu.tongji.dwbackend.Mysql.entity.*;
 import cn.edu.tongji.dwbackend.Mysql.repository.*;
 import cn.edu.tongji.dwbackend.Mysql.service.AssociationService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -39,6 +38,9 @@ public class AssociationServiceImpl implements AssociationService {
 
     @Resource
     ViewCategoryNameRepository viewCategoryNameRepository;
+
+    @Resource
+    ViewActorCooperationTimeRepository viewActorCooperationTimeRepository;
 
     @Override
     public List<String> getMovieNameByStr(String movieString) {
@@ -92,6 +94,19 @@ public class AssociationServiceImpl implements AssociationService {
             result.add(categoryName.getCategoryName());
         }
 
+        return result;
+    }
+
+    //返回合作次数最多的演员
+    @Override
+    public HashMap<String, Object> getMaxCooperationTimeOfActors() {
+        ViewActorCooperationTimeEntity viewActorCooperationTimeEntity = viewActorCooperationTimeRepository.findTopBy();
+        HashMap<String,Object> result = new HashMap<>();
+        List<String> actors = new ArrayList<>();
+        actors.add(viewActorCooperationTimeEntity.getActorName1());
+        actors.add(viewActorCooperationTimeEntity.getActorName2());
+        result.put("actor",actors);
+        result.put("number",viewActorCooperationTimeEntity.getCooperTime());
         return result;
     }
 }
