@@ -3,14 +3,11 @@ package
  * @author 梁乔 2021/12/6
  **/
 
-import cn.edu.tongji.dwbackend.Mysql.entity.DirectorMovieEntity;
 import cn.edu.tongji.dwbackend.Mysql.entity.MovieEntity;
 import cn.edu.tongji.dwbackend.Mysql.entity.ViewActorNameEntity;
+import cn.edu.tongji.dwbackend.Mysql.entity.ViewCategoryNameEntity;
 import cn.edu.tongji.dwbackend.Mysql.entity.ViewDirectorNameEntity;
-import cn.edu.tongji.dwbackend.Mysql.repository.DirectorMovieRepository;
-import cn.edu.tongji.dwbackend.Mysql.repository.MovieRepository;
-import cn.edu.tongji.dwbackend.Mysql.repository.ViewActorNameRepository;
-import cn.edu.tongji.dwbackend.Mysql.repository.ViewDirectorNameRepository;
+import cn.edu.tongji.dwbackend.Mysql.repository.*;
 import cn.edu.tongji.dwbackend.Mysql.service.AssociationService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -39,6 +36,9 @@ public class AssociationServiceImpl implements AssociationService {
 
     @Resource
     ViewActorNameRepository viewActorNameRepository;
+
+    @Resource
+    ViewCategoryNameRepository viewCategoryNameRepository;
 
     @Override
     public List<String> getMovieNameByStr(String movieString) {
@@ -76,6 +76,20 @@ public class AssociationServiceImpl implements AssociationService {
         List<String> result = new ArrayList<>();
         for (ViewActorNameEntity actor: actorList){
             result.add(actor.getActorName());
+        }
+
+        return result;
+    }
+
+    @Override
+    public List<String> getCategoryNameByStr(String category){
+        Pageable pageable = PageRequest.of(0, 50);
+        List<ViewCategoryNameEntity> categoryList =
+                viewCategoryNameRepository.findAllByCategoryNameStartingWith(category, pageable);
+
+        List<String> result = new ArrayList<>();
+        for (ViewCategoryNameEntity categoryName: categoryList){
+            result.add(categoryName.getCategoryName());
         }
 
         return result;

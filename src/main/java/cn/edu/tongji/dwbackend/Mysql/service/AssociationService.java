@@ -18,5 +18,7 @@ public interface AssociationService {
 
     List<String> getDirectorNameByStr(String directorName);
 
-    public List<String> getActorNameByStr(String actorName);
+    List<String> getActorNameByStr(String actorName);
+
+    List<String> getCategoryNameByStr(String category);
 }

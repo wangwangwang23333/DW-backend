@@ -46,4 +46,11 @@ public class AssociationController {
     ){
         return new ResponseEntity<>(associationService.getActorNameByStr(actorName), HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/category", method = RequestMethod.GET)
+    public ResponseEntity<List<String>> getCategoryListByString(
+            @RequestParam(value = "category") String category
+    ){
+        return new ResponseEntity<>(associationService.getCategoryNameByStr(category), HttpStatus.OK);
+    }
 }
