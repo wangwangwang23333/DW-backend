@@ -53,7 +53,59 @@ public class AssociationController {
         return new ResponseEntity<>(associationService.getCategoryNameByStr(category), HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/movie/director", method = RequestMethod.GET)
+    public ResponseEntity<HashMap<String, Object>> getMovieDirectorByMovieAsin(
+            @RequestParam(value = "movieAsin") String movieAsin,
+            @RequestParam(value = "index") Integer index
+    ){
+        HashMap<String, Object> res = new HashMap<>();
+        res.put("index", index);
+        res.put("director", associationService.getAllDirectorsByMovieAsin(movieAsin));
+        return new ResponseEntity<>(res, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/movie/mainActor", method = RequestMethod.GET)
+    public ResponseEntity<HashMap<String, Object>> getMovieMainActorByMovieAsin(
+            @RequestParam(value = "movieAsin") String movieAsin,
+            @RequestParam(value = "index") Integer index
+    ){
+        HashMap<String, Object> res = new HashMap<>();
+        res.put("index", index);
+        res.put("mainActor", associationService.getAllMainActorsByMovieAsin(movieAsin));
+        return new ResponseEntity<>(res, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/movie/actor", method = RequestMethod.GET)
+    public ResponseEntity<HashMap<String, Object>> getMovieActorByMovieAsin(
+            @RequestParam(value = "movieAsin") String movieAsin,
+            @RequestParam(value = "index") Integer index
+    ){
+        HashMap<String, Object> res = new HashMap<>();
+        res.put("index", index);
+        res.put("actor", associationService.getAllActorsByMovieAsin(movieAsin));
+        return new ResponseEntity<>(res, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "movie/actors", method = RequestMethod.GET)
+    public ResponseEntity<List<String>> getMovieByActorAndActor(
+            @RequestParam(value = "actor1") String actor1,
+            @RequestParam(value = "actor2") String actor2
+    ){
+        return new ResponseEntity<>(associationService.getMovieNameByActorAndActor(actor1, actor2),
+                HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "movie/actorAndDirector", method = RequestMethod.GET)
+    public ResponseEntity<List<String>> getMovieByActorAndDirector(
+            @RequestParam(value = "actorName") String actorName,
+            @RequestParam(value = "directorName") String directorName
+    ){
+        return new ResponseEntity<>(associationService.getMovieNameByActorAndDirector(actorName, directorName),
+                HttpStatus.OK);
+    }
+      
     @RequestMapping(value = "/actor/cooperation", method = RequestMethod.GET)
+      
     public ResponseEntity<HashMap<String,Object>> getActorsCooperationTime(){
         // 记录开始时间
         long startTime = System.currentTimeMillis();
@@ -69,5 +121,6 @@ public class AssociationController {
             ){
         HashMap<String,Object> result = associationService.getMovieResultsByMutipleRules(movieInfoDto);
         return new ResponseEntity<>(result,HttpStatus.OK);
+
     }
 }

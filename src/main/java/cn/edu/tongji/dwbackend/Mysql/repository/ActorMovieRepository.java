@@ -5,13 +5,18 @@ import cn.edu.tongji.dwbackend.Mysql.entity.ActorMovieEntityPK;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.HashSet;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import java.util.List;
 
-/**
- * @author 梁乔 2021/12/8
- **/
-public interface ActorMovieRepository extends JpaRepository<ActorMovieEntity, ActorMovieEntityPK> {
 
+public interface ActorMovieRepository
+extends JpaRepository<ActorMovieEntity, ActorMovieEntityPK> ,
+        JpaSpecificationExecutor<ActorMovieEntity> {
+    List<ActorMovieEntity> findAllByMovieIdAndIsMainActor(int movieId, byte isMainActor);
     List<ActorMovieEntity> findAllByActorNameAndIsMainActor(String actorName, byte isMainActor);
+ 
+        
+        }
 
-}
+
+

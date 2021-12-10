@@ -14,6 +14,10 @@ public interface MovieRepository extends JpaRepository<MovieEntity,Integer> , Jp
 
     List<MovieEntity> findAllByMovieNameStartingWith(String movieName, Pageable pageable);
 
+    MovieEntity findFirstByMovieAsin(String movieAsin);
+
+    MovieEntity findFirstByMovieId(int movieId);
+
     List<MovieEntity> findAllByMovieName(String movieName);
 
     List<MovieEntity> findAllByMovieScoreGreaterThanEqualAndMovieScoreLessThanEqual(Double minScore,Double maxScore);
@@ -27,5 +31,4 @@ public interface MovieRepository extends JpaRepository<MovieEntity,Integer> , Jp
     List<MovieEntity> findAllByTimeStrAfterAndTimeStrBefore(Timestamp minDate,Timestamp maxDate);
 
     MovieEntity findByMovieId(Integer movieId);
-
 }

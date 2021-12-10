@@ -24,6 +24,16 @@ public interface AssociationService {
 
     List<String> getCategoryNameByStr(String category);
 
+    List<String> getAllDirectorsByMovieAsin(String movieAsin);
+
+    List<String> getAllMainActorsByMovieAsin(String movieAsin);
+
+    List<String> getAllActorsByMovieAsin(String movieAsin);
+
+    List<String> getMovieNameByActorAndActor(String actor1, String actor2);
+
+    List<String> getMovieNameByActorAndDirector(String actorName, String directorName);
+
     HashMap<String,Object> getMaxCooperationTimeOfActors();
 
     HashMap<String,Object> getMovieResultsByMutipleRules(MovieInfoDto movieInfoDto);
