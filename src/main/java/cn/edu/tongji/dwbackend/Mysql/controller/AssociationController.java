@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -55,9 +56,13 @@ public class AssociationController {
     }
 
     @RequestMapping(value = "/movie/director", method = RequestMethod.GET)
-    public ResponseEntity<List<String>> getMovieDirectorByMovieAsin(
-            @RequestParam(value = "movieAsin") String movieAsin
+    public ResponseEntity<HashMap<String, Object>> getMovieDirectorByMovieAsin(
+            @RequestParam(value = "movieAsin") String movieAsin,
+            @RequestParam(value = "index") Integer index
     ){
-        return new ResponseEntity<>(associationService.getAllDirectorsByMovieAsin(movieAsin), HttpStatus.OK);
+        HashMap<String, Object> res = new HashMap<>();
+        res.put("index", index);
+        res.put("director", associationService.getAllDirectorsByMovieAsin(movieAsin));
+        return new ResponseEntity<>(res, HttpStatus.OK);
     }
 }

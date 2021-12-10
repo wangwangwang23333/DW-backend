@@ -37,6 +37,9 @@ public class AssociationServiceImpl implements AssociationService {
     @Resource
     ViewCategoryNameRepository viewCategoryNameRepository;
 
+    @Resource
+    ActorMovieRepository actorMovieRepository;
+
     @Override
     public List<String> getMovieNameByStr(String movieString) {
         Pageable pageable = PageRequest.of(0, 25);
@@ -99,12 +102,50 @@ public class AssociationServiceImpl implements AssociationService {
         if(movie == null){
             return null;
         }
-        
+
         List<DirectorMovieEntity> directorList = directorMovieRepository.findAllByMovieId(movie.getMovieId());
         List<String> result = new ArrayList<>();
 
         for(DirectorMovieEntity directorMovie: directorList){
             result.add(directorMovie.getDirectorName());
+        }
+
+        return result;
+    }
+
+    @Override
+    public List<String> getAllMainActorsByMovieAsin(String movieAsin){
+        MovieEntity movie = movieRepository.findFirstByMovieAsin(movieAsin);
+
+        if(movie == null){
+            return null;
+        }
+
+        byte b=1;
+        List<ActorMovieEntity> mainActorList = actorMovieRepository.findAllByMovieIdAndIsMainActor(movie.getMovieId(), b);
+        List<String> result = new ArrayList<>();
+
+        for(ActorMovieEntity actorMovie: mainActorList){
+            result.add(actorMovie.getActorName());
+        }
+
+        return result;
+    }
+
+    @Override
+    public List<String> getAllActorsByMovieAsin(String movieAsin){
+        MovieEntity movie = movieRepository.findFirstByMovieAsin(movieAsin);
+
+        if(movie == null){
+            return null;
+        }
+
+        byte b=0;
+        List<ActorMovieEntity> mainActorList = actorMovieRepository.findAllByMovieIdAndIsMainActor(movie.getMovieId(), b);
+        List<String> result = new ArrayList<>();
+
+        for(ActorMovieEntity actorMovie: mainActorList){
+            result.add(actorMovie.getActorName());
         }
 
         return result;
