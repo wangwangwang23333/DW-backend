@@ -87,4 +87,22 @@ public class AssociationController {
         res.put("actor", associationService.getAllActorsByMovieAsin(movieAsin));
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
+
+    @RequestMapping(value = "movie/actors", method = RequestMethod.GET)
+    public ResponseEntity<List<String>> getMovieByActorAndActor(
+            @RequestParam(value = "actor1") String actor1,
+            @RequestParam(value = "actor2") String actor2
+    ){
+        return new ResponseEntity<>(associationService.getMovieNameByActorAndActor(actor1, actor2),
+                HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "movie/actorAndDirector", method = RequestMethod.GET)
+    public ResponseEntity<List<String>> getMovieByActorAndDirector(
+            @RequestParam(value = "actorName") String actorName,
+            @RequestParam(value = "directorName") String directorName
+    ){
+        return new ResponseEntity<>(associationService.getMovieNameByActorAndDirector(actorName, directorName),
+                HttpStatus.OK);
+    }
 }

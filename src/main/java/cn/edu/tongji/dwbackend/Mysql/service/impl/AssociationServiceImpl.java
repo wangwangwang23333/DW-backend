@@ -40,6 +40,12 @@ public class AssociationServiceImpl implements AssociationService {
     @Resource
     ActorMovieRepository actorMovieRepository;
 
+    @Resource
+    ViewActorActorRepository viewActorActorRepository;
+
+    @Resource
+    ViewActorDirectorRepository viewActorDirectorRepository;
+
     @Override
     public List<String> getMovieNameByStr(String movieString) {
         Pageable pageable = PageRequest.of(0, 25);
@@ -148,6 +154,30 @@ public class AssociationServiceImpl implements AssociationService {
             result.add(actorMovie.getActorName());
         }
 
+        return result;
+    }
+
+    @Override
+    public List<String> getMovieNameByActorAndActor(String actor1, String actor2){
+        List<ViewActorActorEntity> viewActorActorEntities
+                = viewActorActorRepository.findAllByActor1AndActor2(actor1, actor2);
+        List<String> result = new ArrayList<>();
+
+        for(ViewActorActorEntity viewActorActor: viewActorActorEntities){
+            result.add(movieRepository.findFirstByMovieId(viewActorActor.getMovieId()).getMovieName());
+        }
+        return result;
+    }
+
+    @Override
+    public List<String> getMovieNameByActorAndDirector(String actorName, String directorName){
+        List<ViewActorDirectorEntity> viewActorDirectorEntities
+                = viewActorDirectorRepository.findAllByActorNameAndDirectorName(actorName, directorName);
+        List<String> result = new ArrayList<>();
+
+        for(ViewActorDirectorEntity viewActorDirector: viewActorDirectorEntities){
+            result.add(movieRepository.findFirstByMovieId(viewActorDirector.getMovieId()).getMovieName());
+        }
         return result;
     }
 }

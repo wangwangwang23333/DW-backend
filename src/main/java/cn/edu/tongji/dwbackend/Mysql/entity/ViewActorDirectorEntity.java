@@ -11,7 +11,7 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "view_actor_director", schema = "DataWarehouse", catalog = "")
-@IdClass(ViewActorActorEntityPK.class)
+@IdClass(ViewActorDirectorEntityPK.class)
 public class ViewActorDirectorEntity {
     private int movieId;
     private String actorName;

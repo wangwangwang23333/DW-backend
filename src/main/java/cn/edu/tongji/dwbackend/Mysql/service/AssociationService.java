@@ -27,4 +27,8 @@ public interface AssociationService {
     List<String> getAllMainActorsByMovieAsin(String movieAsin);
 
     List<String> getAllActorsByMovieAsin(String movieAsin);
+
+    List<String> getMovieNameByActorAndActor(String actor1, String actor2);
+
+    List<String> getMovieNameByActorAndDirector(String actorName, String directorName);
 }
