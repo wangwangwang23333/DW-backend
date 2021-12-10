@@ -3,10 +3,7 @@ package
  * @author 梁乔 2021/12/6
  **/
 
-import cn.edu.tongji.dwbackend.Mysql.entity.MovieEntity;
-import cn.edu.tongji.dwbackend.Mysql.entity.ViewActorNameEntity;
-import cn.edu.tongji.dwbackend.Mysql.entity.ViewCategoryNameEntity;
-import cn.edu.tongji.dwbackend.Mysql.entity.ViewDirectorNameEntity;
+import cn.edu.tongji.dwbackend.Mysql.entity.*;
 import cn.edu.tongji.dwbackend.Mysql.repository.*;
 import cn.edu.tongji.dwbackend.Mysql.service.AssociationService;
 import org.springframework.data.domain.PageRequest;
@@ -90,6 +87,24 @@ public class AssociationServiceImpl implements AssociationService {
         List<String> result = new ArrayList<>();
         for (ViewCategoryNameEntity categoryName: categoryList){
             result.add(categoryName.getCategoryName());
+        }
+
+        return result;
+    }
+
+    @Override
+    public List<String> getAllDirectorsByMovieAsin(String movieAsin){
+        MovieEntity movie = movieRepository.findFirstByMovieAsin(movieAsin);
+
+        if(movie == null){
+            return null;
+        }
+        
+        List<DirectorMovieEntity> directorList = directorMovieRepository.findAllByMovieId(movie.getMovieId());
+        List<String> result = new ArrayList<>();
+
+        for(DirectorMovieEntity directorMovie: directorList){
+            result.add(directorMovie.getDirectorName());
         }
 
         return result;

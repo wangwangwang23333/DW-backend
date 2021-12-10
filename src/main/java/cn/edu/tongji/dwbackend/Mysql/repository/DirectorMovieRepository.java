@@ -11,5 +11,5 @@ import java.util.List;
 public interface DirectorMovieRepository
 extends JpaRepository<DirectorMovieEntity, DirectorMovieEntityPK>,
         JpaSpecificationExecutor<DirectorMovieEntity> {
-
+    List<DirectorMovieEntity> findAllByMovieId(int movieId);
 }

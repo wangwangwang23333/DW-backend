@@ -53,4 +53,11 @@ public class AssociationController {
     ){
         return new ResponseEntity<>(associationService.getCategoryNameByStr(category), HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/movie/director", method = RequestMethod.GET)
+    public ResponseEntity<List<String>> getMovieDirectorByMovieAsin(
+            @RequestParam(value = "movieAsin") String movieAsin
+    ){
+        return new ResponseEntity<>(associationService.getAllDirectorsByMovieAsin(movieAsin), HttpStatus.OK);
+    }
 }

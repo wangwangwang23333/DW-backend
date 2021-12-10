@@ -12,4 +12,6 @@ public interface MovieRepository extends JpaRepository<MovieEntity,Integer> {
 
 
     List<MovieEntity> findAllByMovieNameStartingWith(String movieName, Pageable pageable);
+
+    MovieEntity findFirstByMovieAsin(String movieAsin);
 }

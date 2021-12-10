@@ -153,7 +153,6 @@ public class MovieController {
                     movieNode.put("format",result.get(i).get(0).get("format").asString());
                 }
                 if (result.get(i).get(0).get("edition") != NullValue.NULL){
-                    System.out.println("read it");
                     movieNode.put("edition",result.get(i).get(0).get("edition").asString());
                 }
                 if (result.get(i).get(0).get("score") != NullValue.NULL){
