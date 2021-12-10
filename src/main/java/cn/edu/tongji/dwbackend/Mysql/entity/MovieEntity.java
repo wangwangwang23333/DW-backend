@@ -1,13 +1,15 @@
-package cn.edu.tongji.dwbackend.Mysql.entity;
+package
+        cn.edu.tongji.dwbackend.Mysql.entity;/**
+ * @author 梁乔 2021/12/10
+ **/
 
 import javax.persistence.*;
-import java.util.Objects;
+import java.sql.Timestamp;
 
 /**
- * TODO:此处写MovieEntity类的描述
- *
- * @author 汪明杰
- * @date 2021/12/7 20:43
+ * 此处写MovieEntity类的描述
+ * @author 梁乔
+ * @since 2021/12/10 23:59 
  */
 @Entity
 @Table(name = "movie", schema = "DataWarehouse", catalog = "")
@@ -16,10 +18,13 @@ public class MovieEntity {
     private String movieName;
     private byte movieEditionNum;
     private Double movieScore;
+    private Integer timeId;
+    private Integer formatId;
     private String movieAsin;
     private Double dbRatingScore;
     private String movieEdition;
     private Integer commentNum;
+    private Timestamp timeStr;
 
     @Id
     @Column(name = "movie_id")
@@ -62,6 +67,26 @@ public class MovieEntity {
     }
 
     @Basic
+    @Column(name = "time_id")
+    public Integer getTimeId() {
+        return timeId;
+    }
+
+    public void setTimeId(Integer timeId) {
+        this.timeId = timeId;
+    }
+
+    @Basic
+    @Column(name = "format_id")
+    public Integer getFormatId() {
+        return formatId;
+    }
+
+    public void setFormatId(Integer formatId) {
+        this.formatId = formatId;
+    }
+
+    @Basic
     @Column(name = "movie_asin")
     public String getMovieAsin() {
         return movieAsin;
@@ -101,16 +126,52 @@ public class MovieEntity {
         this.commentNum = commentNum;
     }
 
+    @Basic
+    @Column(name = "time_str")
+    public Timestamp getTimeStr() {
+        return timeStr;
+    }
+
+    public void setTimeStr(Timestamp timeStr) {
+        this.timeStr = timeStr;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         MovieEntity that = (MovieEntity) o;
-        return movieId == that.movieId && movieEditionNum == that.movieEditionNum && Objects.equals(movieName, that.movieName) && Objects.equals(movieScore, that.movieScore) && Objects.equals(movieAsin, that.movieAsin) && Objects.equals(dbRatingScore, that.dbRatingScore) && Objects.equals(movieEdition, that.movieEdition) && Objects.equals(commentNum, that.commentNum);
+
+        if (movieId != that.movieId) return false;
+        if (movieEditionNum != that.movieEditionNum) return false;
+        if (movieName != null ? !movieName.equals(that.movieName) : that.movieName != null) return false;
+        if (movieScore != null ? !movieScore.equals(that.movieScore) : that.movieScore != null) return false;
+        if (timeId != null ? !timeId.equals(that.timeId) : that.timeId != null) return false;
+        if (formatId != null ? !formatId.equals(that.formatId) : that.formatId != null) return false;
+        if (movieAsin != null ? !movieAsin.equals(that.movieAsin) : that.movieAsin != null) return false;
+        if (dbRatingScore != null ? !dbRatingScore.equals(that.dbRatingScore) : that.dbRatingScore != null)
+            return false;
+        if (movieEdition != null ? !movieEdition.equals(that.movieEdition) : that.movieEdition != null) return false;
+        if (commentNum != null ? !commentNum.equals(that.commentNum) : that.commentNum != null) return false;
+        if (timeStr != null ? !timeStr.equals(that.timeStr) : that.timeStr != null) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(movieId, movieName, movieEditionNum, movieScore, movieAsin, dbRatingScore, movieEdition, commentNum);
+        int result = movieId;
+        result = 31 * result + (movieName != null ? movieName.hashCode() : 0);
+        result = 31 * result + (int) movieEditionNum;
+        result = 31 * result + (movieScore != null ? movieScore.hashCode() : 0);
+        result = 31 * result + (timeId != null ? timeId.hashCode() : 0);
+        result = 31 * result + (formatId != null ? formatId.hashCode() : 0);
+        result = 31 * result + (movieAsin != null ? movieAsin.hashCode() : 0);
+        result = 31 * result + (dbRatingScore != null ? dbRatingScore.hashCode() : 0);
+        result = 31 * result + (movieEdition != null ? movieEdition.hashCode() : 0);
+        result = 31 * result + (commentNum != null ? commentNum.hashCode() : 0);
+        result = 31 * result + (timeStr != null ? timeStr.hashCode() : 0);
+        return result;
     }
 }

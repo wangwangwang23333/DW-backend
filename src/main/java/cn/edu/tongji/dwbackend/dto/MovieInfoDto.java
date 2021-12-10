@@ -1,7 +1,5 @@
 package cn.edu.tongji.dwbackend.dto;
 
-import org.springframework.web.bind.annotation.RequestParam;
-
 import java.util.List;
 
 /**
