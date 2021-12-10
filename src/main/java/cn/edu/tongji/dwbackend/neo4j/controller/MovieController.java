@@ -136,7 +136,6 @@ public class MovieController {
             HashMap<String,Object> response = new HashMap<>();
 
             List<Record> result = res.list();
-            System.out.println(result.get(0).get(0).get("title"));
 
             List<HashMap<String, Object>> movieResult = new ArrayList<>();
 
