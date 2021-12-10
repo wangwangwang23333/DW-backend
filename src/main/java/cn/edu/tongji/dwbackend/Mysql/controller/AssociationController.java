@@ -4,12 +4,10 @@ package
  **/
 
 import cn.edu.tongji.dwbackend.Mysql.service.AssociationService;
+import cn.edu.tongji.dwbackend.dto.MovieInfoDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -104,5 +102,25 @@ public class AssociationController {
     ){
         return new ResponseEntity<>(associationService.getMovieNameByActorAndDirector(actorName, directorName),
                 HttpStatus.OK);
+    }
+      
+    @RequestMapping(value = "/actor/cooperation", method = RequestMethod.GET)
+      
+    public ResponseEntity<HashMap<String,Object>> getActorsCooperationTime(){
+        // 记录开始时间
+        long startTime = System.currentTimeMillis();
+        HashMap<String,Object> result = associationService.getMaxCooperationTimeOfActors();
+        long endTime = System.currentTimeMillis();
+        result.put("time",endTime-startTime);
+        return new ResponseEntity<>(result,HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/movie/result", method = RequestMethod.POST)
+    public ResponseEntity<HashMap<String,Object>> getMovieResult(
+            @RequestBody MovieInfoDto movieInfoDto
+            ){
+        HashMap<String,Object> result = associationService.getMovieResultsByMutipleRules(movieInfoDto);
+        return new ResponseEntity<>(result,HttpStatus.OK);
+
     }
 }

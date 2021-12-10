@@ -3,8 +3,10 @@ package
  * @author 梁乔 2021/12/6
  **/
 
+import cn.edu.tongji.dwbackend.dto.MovieInfoDto;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -31,4 +33,8 @@ public interface AssociationService {
     List<String> getMovieNameByActorAndActor(String actor1, String actor2);
 
     List<String> getMovieNameByActorAndDirector(String actorName, String directorName);
+
+    HashMap<String,Object> getMaxCooperationTimeOfActors();
+
+    HashMap<String,Object> getMovieResultsByMutipleRules(MovieInfoDto movieInfoDto);
 }
