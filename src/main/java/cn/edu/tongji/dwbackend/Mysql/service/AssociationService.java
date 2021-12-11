@@ -36,5 +36,9 @@ public interface AssociationService {
 
     HashMap<String,Object> getMaxCooperationTimeOfActors();
 
+    HashMap<String,Object> getMaxCooperationTimeOfDirectors();
+
+    HashMap<String,Object> getMaxCooperationTimeOfActorsAndDiectors();
+
     HashMap<String,Object> getMovieResultsByMutipleRules(MovieInfoDto movieInfoDto);
 }

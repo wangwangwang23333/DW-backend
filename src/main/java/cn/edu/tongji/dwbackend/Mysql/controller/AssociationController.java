@@ -115,6 +115,26 @@ public class AssociationController {
         return new ResponseEntity<>(result,HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/director/cooperation",method = RequestMethod.GET)
+    public ResponseEntity<HashMap<String,Object>> getDirectorsCooperationTime(){
+        //记录开始时间
+        long startTime = System.currentTimeMillis();
+        HashMap<String,Object> result = associationService.getMaxCooperationTimeOfDirectors();
+        long endTime = System.currentTimeMillis();
+        result.put("time",endTime-startTime);
+        return  new ResponseEntity<>(result,HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/actor/director/cooperation",method = RequestMethod.GET)
+    public ResponseEntity<HashMap<String,Object>> getActorDirectorCooperationTime(){
+        long startTime = System.currentTimeMillis();
+        HashMap<String,Object> result = associationService.getMaxCooperationTimeOfActorsAndDiectors();
+        long endTime = System.currentTimeMillis();
+        result.put("time",endTime - startTime);
+        return new ResponseEntity<>(result,HttpStatus.OK);
+    }
+
+
     @RequestMapping(value = "/movie/result", method = RequestMethod.POST)
     public ResponseEntity<HashMap<String,Object>> getMovieResult(
             @RequestBody MovieInfoDto movieInfoDto
@@ -123,4 +143,7 @@ public class AssociationController {
         return new ResponseEntity<>(result,HttpStatus.OK);
 
     }
+
+
+
 }

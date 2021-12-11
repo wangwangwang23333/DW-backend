@@ -76,6 +76,12 @@ public class AssociationServiceImpl implements AssociationService {
 
     @Resource
     MovieScoreRepository movieScoreRepository;
+
+    @Resource
+    ViewDirectorCooperationTimeRespository viewDirectorCooperationTimeRespository;
+
+    @Resource
+    ViewActorDirectorCooperationTimeRespository viewActorDirectorCooperationTimeRespository;
     @Override
     public List<String> getMovieNameByStr(String movieString) {
         Pageable pageable = PageRequest.of(0, 25);
@@ -221,6 +227,28 @@ public class AssociationServiceImpl implements AssociationService {
         result.put("actor",actors);
         result.put("number",viewActorCooperationTimeEntity.getCooperTime());
         return result;
+    }
+
+    @Override
+    public HashMap<String, Object> getMaxCooperationTimeOfDirectors() {
+        ViewDirectorCooperationTimeEntity viewDirectorCooperationTimeEntity = viewDirectorCooperationTimeRespository.findTopBy();
+        HashMap<String,Object> result = new HashMap<>();
+        List<String> directors = new ArrayList<>();
+        directors.add(viewDirectorCooperationTimeEntity.getDirectorName1());
+        directors.add(viewDirectorCooperationTimeEntity.getDirectorName2());
+        result.put("director",directors);
+        result.put("number",viewDirectorCooperationTimeEntity.getCooperTime());
+        return result;
+    }
+
+    @Override
+    public HashMap<String, Object> getMaxCooperationTimeOfActorsAndDiectors() {
+        ViewActorDirectorCooperationTimeEntity viewActorDirectorCooperationTimeEntity = viewActorDirectorCooperationTimeRespository.findTopBy();
+        HashMap<String,Object> result = new HashMap<>();
+        result.put("actor",viewActorDirectorCooperationTimeEntity.getActorName());
+        result.put("director",viewActorDirectorCooperationTimeEntity.getDirectorName());
+        result.put("number",viewActorDirectorCooperationTimeEntity.getCooperTime());
+        return  result;
     }
 
     //根据多条件筛选电影
