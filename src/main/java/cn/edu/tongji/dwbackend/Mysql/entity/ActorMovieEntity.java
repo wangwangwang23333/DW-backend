@@ -1,13 +1,14 @@
-package cn.edu.tongji.dwbackend.Mysql.entity;
+package
+        cn.edu.tongji.dwbackend.Mysql.entity;/**
+ * @author 梁乔 2021/12/11
+ **/
 
 import javax.persistence.*;
-import java.util.Objects;
 
 /**
- * TODO:此处写ActorMovieEntity类的描述
- *
- * @author 汪明杰
- * @date 2021/12/7 21:21
+ * 此处写ActorMovieEntity类的描述
+ * @author 梁乔
+ * @since 2021/12/11 16:09 
  */
 @Entity
 @Table(name = "actor_movie", schema = "DataWarehouse", catalog = "")
@@ -16,7 +17,6 @@ public class ActorMovieEntity {
     private String actorName;
     private int movieId;
     private byte isMainActor;
-    private String movieName;
 
     @Id
     @Column(name = "actor_name")
@@ -48,26 +48,25 @@ public class ActorMovieEntity {
         this.isMainActor = isMainActor;
     }
 
-    @Basic
-    @Column(name = "movie_name")
-    public String getMovieName() {
-        return movieName;
-    }
-
-    public void setMovieName(String movieName) {
-        this.movieName = movieName;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         ActorMovieEntity that = (ActorMovieEntity) o;
-        return movieId == that.movieId && isMainActor == that.isMainActor && Objects.equals(actorName, that.actorName) && Objects.equals(movieName, that.movieName);
+
+        if (movieId != that.movieId) return false;
+        if (isMainActor != that.isMainActor) return false;
+        if (actorName != null ? !actorName.equals(that.actorName) : that.actorName != null) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(actorName, movieId, isMainActor, movieName);
+        int result = actorName != null ? actorName.hashCode() : 0;
+        result = 31 * result + movieId;
+        result = 31 * result + (int) isMainActor;
+        return result;
     }
 }

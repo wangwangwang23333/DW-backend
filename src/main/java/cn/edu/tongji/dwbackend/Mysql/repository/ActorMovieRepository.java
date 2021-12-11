@@ -4,7 +4,6 @@ import cn.edu.tongji.dwbackend.Mysql.entity.ActorMovieEntity;
 import cn.edu.tongji.dwbackend.Mysql.entity.ActorMovieEntityPK;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.HashSet;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import java.util.List;
 
