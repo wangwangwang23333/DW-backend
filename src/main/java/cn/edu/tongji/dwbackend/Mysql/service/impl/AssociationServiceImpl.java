@@ -7,6 +7,7 @@ import cn.edu.tongji.dwbackend.Mysql.entity.*;
 import cn.edu.tongji.dwbackend.Mysql.repository.*;
 import cn.edu.tongji.dwbackend.Mysql.service.AssociationService;
 import cn.edu.tongji.dwbackend.dto.MovieInfoDto;
+import org.springframework.boot.autoconfigure.freemarker.FreeMarkerAutoConfiguration;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -59,14 +60,10 @@ public class AssociationServiceImpl implements AssociationService {
     @Resource
     ViewActorCooperationTimeRepository viewActorCooperationTimeRepository;
 
-    @Resource
-    ViewModelFactRepository viewModelFactRepository;
 
     @Resource
     CategoryRepository categoryRepository;
 
-    @Resource
-    ActorMovieRepository actorMovieRepository;
 
     @Resource
     TimeRepository timeRepository;
@@ -74,6 +71,11 @@ public class AssociationServiceImpl implements AssociationService {
     @Resource
     FormatRepository formatRepository;
 
+    @Resource
+    TimeMovieRepository timeMovieRepository;
+
+    @Resource
+    MovieScoreRepository movieScoreRepository;
     @Override
     public List<String> getMovieNameByStr(String movieString) {
         Pageable pageable = PageRequest.of(0, 25);
@@ -198,15 +200,16 @@ public class AssociationServiceImpl implements AssociationService {
     }
 
     @Override
-    public List<String> getMovieNameByActorAndDirector(String actorName, String directorName){
+    public List<String> getMovieNameByActorAndDirector(String actorName, String directorName) {
         List<ViewActorDirectorEntity> viewActorDirectorEntities
                 = viewActorDirectorRepository.findAllByActorNameAndDirectorName(actorName, directorName);
         List<String> result = new ArrayList<>();
 
-        for(ViewActorDirectorEntity viewActorDirector: viewActorDirectorEntities){
+        for (ViewActorDirectorEntity viewActorDirector : viewActorDirectorEntities) {
             result.add(movieRepository.findFirstByMovieId(viewActorDirector.getMovieId()).getMovieName());
         }
-
+        return result;
+    }
     //返回合作次数最多的演员
     @Override
     public HashMap<String, Object> getMaxCooperationTimeOfActors() {
@@ -391,10 +394,10 @@ public class AssociationServiceImpl implements AssociationService {
 
         //按照最大最小值查找
         if(movieInfoDto.getMinScore() != null && movieInfoDto.getMaxScore() !=null){
-            List<MovieEntity> movieEntities = movieRepository.findAllByMovieScoreGreaterThanEqualAndMovieScoreLessThanEqual(Double.valueOf(movieInfoDto.getMinScore()),Double.valueOf(movieInfoDto.getMaxScore()));
+            List<MovieScoreEntity> movieScoreEntityList = movieScoreRepository.findAllByMovieScoreGreaterThanEqualAndMovieScoreLessThanEqual(Double.parseDouble(movieInfoDto.getMinScore()),Double.parseDouble(movieInfoDto.getMaxScore()));
             Set<Integer> movieIdOfScore = new HashSet<>();
-            for(MovieEntity movieEntity:movieEntities){
-                movieIdOfScore.add(movieEntity.getMovieId());
+            for(MovieScoreEntity movieScoreEntity:movieScoreEntityList){
+                movieIdOfScore.add(movieScoreEntity.getMovieId());
             }
             if(rulesNumber != 0){
                 resultMovieIdList.retainAll(movieIdOfScore);
@@ -405,10 +408,10 @@ public class AssociationServiceImpl implements AssociationService {
             rulesNumber++;
         }
         else if(movieInfoDto.getMinScore() != null){
-            List<MovieEntity> movieEntities = movieRepository.findAllByMovieScoreGreaterThanEqual(Double.valueOf(movieInfoDto.getMinScore()));
+           List<MovieScoreEntity> movieScoreEntityList = movieScoreRepository.findAllByMovieScoreGreaterThanEqual(Double.parseDouble(movieInfoDto.getMinScore()));
             Set<Integer> movieIdOfMinScore = new HashSet<>();
-            for(MovieEntity movieEntity:movieEntities){
-                movieIdOfMinScore.add(movieEntity.getMovieId());
+            for(MovieScoreEntity movieScore:movieScoreEntityList){
+                movieIdOfMinScore.add(movieScore.getMovieId());
             }
             if(rulesNumber != 0){
                 resultMovieIdList.retainAll(movieIdOfMinScore);
@@ -418,11 +421,11 @@ public class AssociationServiceImpl implements AssociationService {
             }
             rulesNumber++;
         }
-        else if(movieInfoDto.getMinScore() != null){
-            List<MovieEntity> movieEntities = movieRepository.findAllByMovieScoreLessThanEqual(Double.valueOf(movieInfoDto.getMaxScore()));
+        else if(movieInfoDto.getMaxScore() != null){
+            List<MovieScoreEntity> movieScoreEntityList = movieScoreRepository.findAllByMovieScoreLessThanEqual(Double.parseDouble(movieInfoDto.getMaxScore()));
             Set<Integer> movieIdOfMaxScore = new HashSet<>();
-            for(MovieEntity movieEntity:movieEntities){
-                movieIdOfMaxScore.add(movieEntity.getMovieId());
+            for(MovieScoreEntity movieScore:movieScoreEntityList){
+                movieIdOfMaxScore.add(movieScore.getMovieId());
             }
             if(rulesNumber != 0){
                 resultMovieIdList.retainAll(movieIdOfMaxScore);
@@ -451,10 +454,23 @@ public class AssociationServiceImpl implements AssociationService {
             Timestamp maxDate = Timestamp.valueOf(maxDateStr);
 
             Set<Integer> movieIdOfDate = new HashSet<>();
-            List<MovieEntity> movieEntities = movieRepository.findAllByTimeStrAfterAndTimeStrBefore(minDate, maxDate);
-            for(MovieEntity movieEntity:movieEntities){
-                movieIdOfDate.add(movieEntity.getMovieId());
+            //List<MovieEntity> movieEntities = new ArrayList<>();
+            //List<MovieEntity> movieEntities = movieRepository.findAllByTimeStrAfterAndTimeStrBefore(minDate, maxDate);
+
+
+            //尝试使用time_movie表
+            //List<TimeEntity> timeEntities = timeRepository.findAllByTimeStrAfterAndTimeStrBefore(minDate,maxDate);
+
+//            for(TimeEntity timeEntity:timeEntities){
+//                movieEntities.addAll(movieRepository.findAllByTimeId(timeEntity.getTimeId()));
+//            }
+            List<TimeMovieEntity> timeMovieEntities = timeMovieRepository.findAllByTimeStrAfterAndTimeStrBefore(minDate,maxDate);
+            for(TimeMovieEntity timeMovieEntity:timeMovieEntities){
+                movieIdOfDate.add(timeMovieEntity.getMovieId());
             }
+//            for(MovieEntity movieEntity:movieEntities){
+//                movieIdOfDate.add(movieEntity.getMovieId());
+//            }
             if(rulesNumber != 0){
                 resultMovieIdList.retainAll(movieIdOfDate);
             }
@@ -462,6 +478,9 @@ public class AssociationServiceImpl implements AssociationService {
                 resultMovieIdList = movieIdOfDate;
             }
         }
+
+        long endTime = System.currentTimeMillis();
+        //查询完毕
         //开始输出结果
         List<HashMap<String, Object>> movieResult = new ArrayList<>();
         int resultNum = 0;
@@ -472,17 +491,34 @@ public class AssociationServiceImpl implements AssociationService {
             movieNode.put("asin",movieEntity.getMovieAsin());
             movieNode.put("title",movieEntity.getMovieName());
 
+
+            //添加冗余字段 format——name
             Integer formatId = movieEntity.getFormatId();
             FormatEntity formatEntity =  formatRepository.findByFormatId(formatId);
-            movieNode.put("format",formatEntity.getFormatName());
+            if(formatEntity != null) {
+                movieNode.put("format", formatEntity.getFormatName());
+            }
             movieNode.put("edition",movieEntity.getMovieEdition());
             movieNode.put("score",movieEntity.getMovieScore());
             movieNode.put("commentNum",movieEntity.getCommentNum());
 
-            TimeEntity timeEntity = timeRepository.findByTimeId(movieEntity.getTimeId());
-            movieNode.put("year",timeEntity.getYear());
-            movieNode.put("month",timeEntity.getMonth());
-            movieNode.put("day",timeEntity.getDay());
+            //这里使用冗余字段time_str对结果的join作了优化,少join一张表
+
+            Date timeDate = movieEntity.getTimeStr();
+            Calendar calendar = Calendar.getInstance();
+            if(timeDate != null) {
+                calendar.setTime(timeDate);
+                movieNode.put("year", calendar.get(Calendar.YEAR));
+                movieNode.put("month", calendar.get(Calendar.MONTH));
+                movieNode.put("day", calendar.get(Calendar.DATE));
+            }
+
+//            TimeEntity timeEntity = timeRepository.findByTimeId(movieEntity.getTimeId());
+//            if(timeEntity != null) {
+//                movieNode.put("year", timeEntity.getYear());
+//                movieNode.put("month", timeEntity.getMonth());
+//                movieNode.put("day", timeEntity.getDay());
+//            }
             movieResult.add(movieNode);
             if(resultNum == 50){
                 break;
@@ -490,7 +526,7 @@ public class AssociationServiceImpl implements AssociationService {
         }
         result.put("movies",movieResult);
         result.put("movieNum",resultMovieIdList.size());
-        long endTime = System.currentTimeMillis();
+
         result.put("time",endTime-startTime);
         return result;
     }

@@ -129,8 +129,7 @@ public class MovieController {
             Result res=
                     session.run(query);
 
-            // 记录结束时间
-            long endTime = System.currentTimeMillis();
+
 
 
             HashMap<String,Object> response = new HashMap<>();
@@ -138,7 +137,8 @@ public class MovieController {
             List<Record> result = res.list();
 
             List<HashMap<String, Object>> movieResult = new ArrayList<>();
-
+            // 记录结束时间
+            long endTime = System.currentTimeMillis();
             // 返回50条
             for(int i=0;i<result.size() && i <50;++i){
                 HashMap<String, Object> movieNode = new HashMap<>();
@@ -172,6 +172,7 @@ public class MovieController {
 
                 movieResult.add(movieNode);
             }
+
 
             response.put("movies",movieResult);
             response.put("movieNum",result.size());
