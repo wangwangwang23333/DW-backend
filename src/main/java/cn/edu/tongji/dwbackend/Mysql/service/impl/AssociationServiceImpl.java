@@ -194,25 +194,33 @@ public class AssociationServiceImpl implements AssociationService {
     }
 
     @Override
-    public List<String> getMovieNameByActorAndActor(String actor1, String actor2){
+    public List<HashMap<String,Object>> getMovieNameByActorAndActor(String actor1, String actor2){
         List<ViewActorActorEntity> viewActorActorEntities
                 = viewActorActorRepository.findAllByActor1AndActor2(actor1, actor2);
-        List<String> result = new ArrayList<>();
+        List<HashMap<String,Object>> result = new ArrayList<>();
 
         for(ViewActorActorEntity viewActorActor: viewActorActorEntities){
-            result.add(movieRepository.findFirstByMovieId(viewActorActor.getMovieId()).getMovieName());
+            MovieEntity movie = movieRepository.findFirstByMovieId(viewActorActor.getMovieId());
+            HashMap<String, Object> hashMap = new HashMap<>();
+            hashMap.put("asin",movie.getMovieAsin());
+            hashMap.put("name",movie.getMovieName());
+            result.add(hashMap);
         }
         return result;
     }
 
     @Override
-    public List<String> getMovieNameByActorAndDirector(String actorName, String directorName) {
+    public List<HashMap<String,Object>> getMovieNameByActorAndDirector(String actorName, String directorName) {
         List<ViewActorDirectorEntity> viewActorDirectorEntities
                 = viewActorDirectorRepository.findAllByActorNameAndDirectorName(actorName, directorName);
-        List<String> result = new ArrayList<>();
+        List<HashMap<String,Object>> result = new ArrayList<>();
 
         for (ViewActorDirectorEntity viewActorDirector : viewActorDirectorEntities) {
-            result.add(movieRepository.findFirstByMovieId(viewActorDirector.getMovieId()).getMovieName());
+            MovieEntity movie = movieRepository.findFirstByMovieId(viewActorDirector.getMovieId());
+            HashMap<String, Object> hashMap = new HashMap<>();
+            hashMap.put("asin",movie.getMovieAsin());
+            hashMap.put("name",movie.getMovieName());
+            result.add(hashMap);
         }
         return result;
     }

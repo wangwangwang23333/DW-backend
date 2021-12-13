@@ -87,7 +87,7 @@ public class AssociationController {
     }
 
     @RequestMapping(value = "movie/actors", method = RequestMethod.GET)
-    public ResponseEntity<List<String>> getMovieByActorAndActor(
+    public ResponseEntity<List<HashMap<String, Object>>> getMovieByActorAndActor(
             @RequestParam(value = "actor1") String actor1,
             @RequestParam(value = "actor2") String actor2
     ){
@@ -96,7 +96,7 @@ public class AssociationController {
     }
 
     @RequestMapping(value = "movie/actorAndDirector", method = RequestMethod.GET)
-    public ResponseEntity<List<String>> getMovieByActorAndDirector(
+    public ResponseEntity<List<HashMap<String, Object>>> getMovieByActorAndDirector(
             @RequestParam(value = "actorName") String actorName,
             @RequestParam(value = "directorName") String directorName
     ){
