@@ -204,6 +204,8 @@ public class AssociationServiceImpl implements AssociationService {
             HashMap<String, Object> hashMap = new HashMap<>();
             hashMap.put("asin",movie.getMovieAsin());
             hashMap.put("name",movie.getMovieName());
+            hashMap.put("score",movie.getMovieScore());
+            hashMap.put("commentNum",movie.getCommentNum());
             result.add(hashMap);
         }
         return result;
@@ -220,6 +222,8 @@ public class AssociationServiceImpl implements AssociationService {
             HashMap<String, Object> hashMap = new HashMap<>();
             hashMap.put("asin",movie.getMovieAsin());
             hashMap.put("name",movie.getMovieName());
+            hashMap.put("score",movie.getMovieScore());
+            hashMap.put("commentNum",movie.getCommentNum());
             result.add(hashMap);
         }
         return result;
