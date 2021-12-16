@@ -1,6 +1,6 @@
 package
         cn.edu.tongji.dwbackend.Mysql.entity;/**
- * @author 梁乔 2021/12/10
+ * @author 梁乔 2021/12/16
  **/
 
 import javax.persistence.*;
@@ -9,7 +9,7 @@ import java.sql.Timestamp;
 /**
  * 此处写MovieEntity类的描述
  * @author 梁乔
- * @since 2021/12/10 23:59 
+ * @since 2021/12/16 13:44 
  */
 @Entity
 @Table(name = "movie", schema = "DataWarehouse", catalog = "")
@@ -21,10 +21,10 @@ public class MovieEntity {
     private Integer timeId;
     private Integer formatId;
     private String movieAsin;
-    private Double dbRatingScore;
     private String movieEdition;
     private Integer commentNum;
     private Timestamp timeStr;
+    private Double dbRatingScore;
 
     @Id
     @Column(name = "movie_id")
@@ -97,16 +97,6 @@ public class MovieEntity {
     }
 
     @Basic
-    @Column(name = "db_rating_score")
-    public Double getDbRatingScore() {
-        return dbRatingScore;
-    }
-
-    public void setDbRatingScore(Double dbRatingScore) {
-        this.dbRatingScore = dbRatingScore;
-    }
-
-    @Basic
     @Column(name = "movie_edition")
     public String getMovieEdition() {
         return movieEdition;
@@ -136,6 +126,16 @@ public class MovieEntity {
         this.timeStr = timeStr;
     }
 
+    @Basic
+    @Column(name = "db_rating_score")
+    public Double getDbRatingScore() {
+        return dbRatingScore;
+    }
+
+    public void setDbRatingScore(Double dbRatingScore) {
+        this.dbRatingScore = dbRatingScore;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -150,11 +150,11 @@ public class MovieEntity {
         if (timeId != null ? !timeId.equals(that.timeId) : that.timeId != null) return false;
         if (formatId != null ? !formatId.equals(that.formatId) : that.formatId != null) return false;
         if (movieAsin != null ? !movieAsin.equals(that.movieAsin) : that.movieAsin != null) return false;
-        if (dbRatingScore != null ? !dbRatingScore.equals(that.dbRatingScore) : that.dbRatingScore != null)
-            return false;
         if (movieEdition != null ? !movieEdition.equals(that.movieEdition) : that.movieEdition != null) return false;
         if (commentNum != null ? !commentNum.equals(that.commentNum) : that.commentNum != null) return false;
         if (timeStr != null ? !timeStr.equals(that.timeStr) : that.timeStr != null) return false;
+        if (dbRatingScore != null ? !dbRatingScore.equals(that.dbRatingScore) : that.dbRatingScore != null)
+            return false;
 
         return true;
     }
@@ -168,10 +168,10 @@ public class MovieEntity {
         result = 31 * result + (timeId != null ? timeId.hashCode() : 0);
         result = 31 * result + (formatId != null ? formatId.hashCode() : 0);
         result = 31 * result + (movieAsin != null ? movieAsin.hashCode() : 0);
-        result = 31 * result + (dbRatingScore != null ? dbRatingScore.hashCode() : 0);
         result = 31 * result + (movieEdition != null ? movieEdition.hashCode() : 0);
         result = 31 * result + (commentNum != null ? commentNum.hashCode() : 0);
         result = 31 * result + (timeStr != null ? timeStr.hashCode() : 0);
+        result = 31 * result + (dbRatingScore != null ? dbRatingScore.hashCode() : 0);
         return result;
     }
 }
