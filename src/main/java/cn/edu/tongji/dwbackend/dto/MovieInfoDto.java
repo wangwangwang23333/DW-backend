@@ -22,6 +22,7 @@ public class MovieInfoDto {
     private Integer maxYear;
     private Integer maxMonth;
     private Integer maxDay;
+    private Integer positive;
 
     public String getMovieName() {
         return movieName;
@@ -125,5 +126,13 @@ public class MovieInfoDto {
 
     public void setMaxDay(Integer maxDay) {
         this.maxDay = maxDay;
+    }
+
+    public Integer getPositive() {
+        return positive;
+    }
+
+    public void setPositive(Integer positive) {
+        this.positive = positive;
     }
 }
