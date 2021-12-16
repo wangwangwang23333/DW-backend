@@ -9,7 +9,7 @@ import java.sql.Timestamp;
 /**
  * 此处写MovieEntity类的描述
  * @author 梁乔
- * @since 2021/12/16 13:44 
+ * @since 2021/12/16 13:49 
  */
 @Entity
 @Table(name = "movie", schema = "DataWarehouse", catalog = "")
@@ -24,7 +24,6 @@ public class MovieEntity {
     private String movieEdition;
     private Integer commentNum;
     private Timestamp timeStr;
-    private Double dbRatingScore;
 
     @Id
     @Column(name = "movie_id")
@@ -126,16 +125,6 @@ public class MovieEntity {
         this.timeStr = timeStr;
     }
 
-    @Basic
-    @Column(name = "db_rating_score")
-    public Double getDbRatingScore() {
-        return dbRatingScore;
-    }
-
-    public void setDbRatingScore(Double dbRatingScore) {
-        this.dbRatingScore = dbRatingScore;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -153,8 +142,6 @@ public class MovieEntity {
         if (movieEdition != null ? !movieEdition.equals(that.movieEdition) : that.movieEdition != null) return false;
         if (commentNum != null ? !commentNum.equals(that.commentNum) : that.commentNum != null) return false;
         if (timeStr != null ? !timeStr.equals(that.timeStr) : that.timeStr != null) return false;
-        if (dbRatingScore != null ? !dbRatingScore.equals(that.dbRatingScore) : that.dbRatingScore != null)
-            return false;
 
         return true;
     }
@@ -171,7 +158,6 @@ public class MovieEntity {
         result = 31 * result + (movieEdition != null ? movieEdition.hashCode() : 0);
         result = 31 * result + (commentNum != null ? commentNum.hashCode() : 0);
         result = 31 * result + (timeStr != null ? timeStr.hashCode() : 0);
-        result = 31 * result + (dbRatingScore != null ? dbRatingScore.hashCode() : 0);
         return result;
     }
 }
