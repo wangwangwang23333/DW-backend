@@ -121,6 +121,18 @@ public class MovieController {
                         (10000*movieInfo.getMaxYear()+100*movieInfo.getMaxMonth()+movieInfo.getMaxDay())+" ";
             }
 
+            if(movieInfo.getPositive()!=null){
+                if (whereAppear){
+                    query+= " and ";
+                }
+                else {
+                    query += " where ";
+                    whereAppear = true;
+                }
+                query+=" m.positive>= "+
+                        String.valueOf(movieInfo.getPositive() * 1.0 / 100)+" ";
+            }
+
             query+=" return m ";
             System.out.println("查询语句为: "+query);
 
@@ -168,6 +180,12 @@ public class MovieController {
                 }
                 if (result.get(i).get(0).get("day") != NullValue.NULL){
                     movieNode.put("day",String.valueOf(result.get(i).get(0).get("day")));
+                }
+                if (result.get(i).get(0).get("positive") != NullValue.NULL){
+                    movieNode.put("positive",String.valueOf(result.get(i).get(0).get("positive")));
+                }
+                if (result.get(i).get(0).get("negative") != NullValue.NULL){
+                    movieNode.put("negative",String.valueOf(result.get(i).get(0).get("negative")));
                 }
 
                 movieResult.add(movieNode);

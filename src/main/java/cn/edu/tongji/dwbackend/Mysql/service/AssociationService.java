@@ -30,9 +30,9 @@ public interface AssociationService {
 
     List<String> getAllActorsByMovieAsin(String movieAsin);
 
-    List<String> getMovieNameByActorAndActor(String actor1, String actor2);
+    List<HashMap<String,Object>> getMovieNameByActorAndActor(String actor1, String actor2);
 
-    List<String> getMovieNameByActorAndDirector(String actorName, String directorName);
+    List<HashMap<String,Object>> getMovieNameByActorAndDirector(String actorName, String directorName);
 
     HashMap<String,Object> getMaxCooperationTimeOfActors();
 
