@@ -1,6 +1,6 @@
 package
         cn.edu.tongji.dwbackend.Mysql.entity;/**
- * @author 梁乔 2021/12/11
+ * @author 梁乔 2021/12/17
  **/
 
 import javax.persistence.*;
@@ -8,7 +8,7 @@ import javax.persistence.*;
 /**
  * 此处写DirectorMovieEntity类的描述
  * @author 梁乔
- * @since 2021/12/11 16:09 
+ * @since 2021/12/17 22:47 
  */
 @Entity
 @Table(name = "director_movie", schema = "DataWarehouse", catalog = "")
@@ -16,7 +16,6 @@ import javax.persistence.*;
 public class DirectorMovieEntity {
     private String directorName;
     private int movieId;
-    private String movieName;
 
     @Id
     @Column(name = "director_name")
@@ -38,16 +37,6 @@ public class DirectorMovieEntity {
         this.movieId = movieId;
     }
 
-    @Basic
-    @Column(name = "movie_name")
-    public String getMovieName() {
-        return movieName;
-    }
-
-    public void setMovieName(String movieName) {
-        this.movieName = movieName;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -57,7 +46,6 @@ public class DirectorMovieEntity {
 
         if (movieId != that.movieId) return false;
         if (directorName != null ? !directorName.equals(that.directorName) : that.directorName != null) return false;
-        if (movieName != null ? !movieName.equals(that.movieName) : that.movieName != null) return false;
 
         return true;
     }
@@ -66,7 +54,6 @@ public class DirectorMovieEntity {
     public int hashCode() {
         int result = directorName != null ? directorName.hashCode() : 0;
         result = 31 * result + movieId;
-        result = 31 * result + (movieName != null ? movieName.hashCode() : 0);
         return result;
     }
 }

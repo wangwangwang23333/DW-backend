@@ -38,6 +38,7 @@ public class ActorMovieEntity {
         this.movieId = movieId;
     }
 
+    @Id
     @Basic
     @Column(name = "is_main_actor")
     public byte getIsMainActor() {
