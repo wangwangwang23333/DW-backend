@@ -1,7 +1,5 @@
 package
-        cn.edu.tongji.dwbackend.Mysql.entity;/**
- * @author 梁乔 2021/12/11
- **/
+        cn.edu.tongji.dwbackend.Mysql.entity;
 
 import javax.persistence.*;
 

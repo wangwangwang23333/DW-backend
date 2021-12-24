@@ -6,7 +6,6 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * TODO:此处写ActorMovieEntityPK类的描述
  *
  * @author 汪明杰
  * @date 2021/12/7 21:21

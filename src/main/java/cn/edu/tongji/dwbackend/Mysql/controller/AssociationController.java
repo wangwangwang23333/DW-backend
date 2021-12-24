@@ -1,7 +1,5 @@
 package
-        cn.edu.tongji.dwbackend.Mysql.controller;/**
- * @author 梁乔 2021/12/6
- **/
+        cn.edu.tongji.dwbackend.Mysql.controller;
 
 import cn.edu.tongji.dwbackend.Mysql.service.AssociationService;
 import cn.edu.tongji.dwbackend.dto.MovieInfoDto;

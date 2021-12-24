@@ -259,7 +259,7 @@ public class AssociationServiceImpl implements AssociationService {
         HashMap<String,Object> result = new HashMap<>();
         result.put("actor",viewActorDirectorCooperationTimeEntity.getActorName());
         result.put("director",viewActorDirectorCooperationTimeEntity.getDirectorName());
-        result.put("number",viewActorDirectorCooperationTimeEntity.getCooperTime());
+        result.put("number",viewActorDirectorCooperationTimeEntity.getMovieCount());
         return  result;
     }
 
